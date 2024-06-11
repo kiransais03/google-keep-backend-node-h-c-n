@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const isAuth = (req,res,next)=>{
-    const tokenstring = req.headers["token-gkeep"];
+    const tokenstring = req.headers["token-googlekeep"];
     const token = tokenstring.split(' ')[1];
     let verified;
 

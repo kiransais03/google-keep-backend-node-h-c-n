@@ -19,6 +19,7 @@ const addMainnotesobjtodb = async (email)=>{
 
 const addSubnotesobjinarrdb = async (email,subnotesobj)=>{
     try {
+        // console.log("Recheck print",email,subnotesobj)
         const addSubnotesresponse = await Notes.updateOne({"email": email},{$push:{"usernotes":subnotesobj}});
         console.log("Notes added to db",addSubnotesresponse)
     }
@@ -41,9 +42,18 @@ const deleteUsernotesobjInarrindb = async (email,deltingobjid)=>{
 }
 
 
-const editUsernotesarrobjdb = async (email,index,editingkey,editingvalue)=>{
+const editUsernotesarrobjdb = async (email,id,editingkey,editingvalue)=>{
     try {
-        const editSubnotesresponse = await Notes.updateOne({"email": email},{$set:{[`usernotes.${index}.${editingkey}`]:editingvalue}});
+        //Here we are using arrayFilters to specifically target the element object using "id" because we 
+        //dont know the index of that obj.Here "elem" is a variable name to represent the arrayFilters condition
+        const editSubnotesresponse = await Notes.updateOne({"email": email},
+            {
+                $set:{[`usernotes.$[elem].${editingkey}`]:editingvalue}
+            },
+            {
+                arrayFilters: [{ "elem.id": id }]
+            });
+            
         console.log("Notes edited in db",editSubnotesresponse)
     }
     catch (error) {

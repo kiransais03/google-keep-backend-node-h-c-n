@@ -27,6 +27,7 @@ const addNewnotes = async (req,res)=>{
     }
 
     const {email,noteobj} = req.body;
+    // console.log("Email",email,"Noteobj",noteobj)
   const isNotesadded = await addSubnotesobjinarrdb(email,noteobj);
 
   if(isNotesadded == ERR) {
@@ -68,9 +69,9 @@ const deleteNotes = async (req,res)=>{
 //PATCH Edit notesobj
 const editNotes = async (req,res)=>{
 
-    const {email,index,editingkey,editingvalue} = req.body;
+    const {email,id,editingkey,editingvalue} = req.body;
 
-    const isNotesedited = await editUsernotesarrobjdb(email,index,editingkey,editingvalue);
+    const isNotesedited = await editUsernotesarrobjdb(email,id,editingkey,editingvalue);
 
    if(isNotesedited == ERR) {
     return res.status(400).send({

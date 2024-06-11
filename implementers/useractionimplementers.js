@@ -2,8 +2,9 @@ const bcrypt = require('bcrypt');
 const Joi = require('joi');
 const jwt = require('jsonwebtoken');
 const User = require('../models/UsersSchema');
-let {addUserToDB,getUserDataFromEmail,getUserDataFromUsername} = require('./dbfunctions/userdbfunctions')
-let {verifyUsernameAndEmailExisits} = require('./verifyUsernameAndEmailExists')
+const {addUserToDB,getUserDataFromEmail,getUserDataFromUsername} = require('./dbfunctions/userdbfunctions')
+const {verifyUsernameAndEmailExisits} = require('./verifyUsernameAndEmailExists');
+const {addMainnotesobjtodb} = require('./dbfunctions/notesdbfunctions')
 const {TRUE,ERR,FALSE,NOT_EXIST} = require('../constants')
 
 const BCRYPT_SALTS = Number(process.env.BCRYPT_SALTS);

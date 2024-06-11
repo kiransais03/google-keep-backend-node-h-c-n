@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const cors = require('cors');
 const useractions = require('./routes/useractions');
+const notesactions = require('./routes/notesactions');
 const {editUsernotesarrobj} = require('./implementers/dbfunctions/notesdbfunctions')
 
 const app = express();
@@ -37,6 +38,8 @@ app.get('/',async (req,res)=>{
 })
 
 app.use('/user',useractions);
+
+app.use('/notes',notesactions);
 
 
 app.listen(PORT,()=>{
