@@ -76,7 +76,7 @@ const editUsernotesarrobjdb = async (email,id,editingkey,editingvalue)=>{
 
 const getnotesarrfromdb = async (email)=>{
     try {
-        const getnotesarrresponse = await Notes.find({"email": email},{"usernotes":1});
+        const getnotesarrresponse = await Notes.find({"email": email});
         console.log("Notesarr from db",getnotesarrresponse);
         return getnotesarrresponse
     }
