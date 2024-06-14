@@ -48,6 +48,10 @@ const NotesSchema = new Schema ({
         unique : true,
         required : true
     },
+    labelslist : {
+        type : Array,
+        required : true
+    },
     usernotes : {
         type : Array,
         requried : true

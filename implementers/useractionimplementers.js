@@ -77,10 +77,10 @@ if(isValid.error)
                         message : "Error occurred while adding Main notes in db.Pls retry"
                     }) 
                    }
-                    return res.status(201).send({
-                        status : 201,
-                        message : "User added successfully"
-                    })
+                     return res.status(201).send({
+                         status : 201,
+                         message : "User added successfully"
+                     })
                 }
 }
 

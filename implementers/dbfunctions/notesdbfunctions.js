@@ -5,6 +5,7 @@ const addMainnotesobjtodb = async (email)=>{
     try {
         let mainnotesobj = new Notes({
             "email":email,
+            "labelslist":[],
             "usernotes" : []
          })
 
@@ -62,5 +63,67 @@ const editUsernotesarrobjdb = async (email,id,editingkey,editingvalue)=>{
     }
 }
 
+const getnotesarrfromdb = async (email)=>{
+    try {
+        const getnotesarrresponse = await Notes.find({"email": email},{"usernotes":1});
+        console.log("Notesarr from db",getnotesarrresponse);
+        return getnotesarrresponse
+    }
+    catch (error) {
+        console.log("Error in getting sub notes from db",error);
+        return ERR;
+    }
+}
 
-module.exports = {addMainnotesobjtodb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,addSubnotesobjinarrdb}
+const getlabelsarrfromdb = async (email)=>{
+    try {
+        const getlabelsarrresponse = await Notes.find({"email": email},{"labelslist":1});
+        console.log("Labelslistsarr from db",getlabelsarrresponse);
+        return getlabelsarrresponse
+    }
+    catch (error) {
+        console.log("Error in getting Labels list from db",error);
+        return ERR;
+    }
+}
+
+const addlabelnametodb = async (email,labelname)=>{
+    try{
+        const addlabelsaresponse = await Notes.updateOne({"email": email},{$push:{"labelslist":labelname}});
+        console.log("Label added to db",addlabelsaresponse)
+    }
+    catch(err) {
+        console.log("Error in adding labels to labelslist in db",err);
+        return ERR;
+    }
+}
+
+const deleteLabelnameInarrindb = async (email,labelname)=>{
+    try {
+        const response =await Notes.updateOne({"email" : email},{$pull :{"labelslist":labelname}});
+        console.log("Label from the array deleted",response)
+        return TRUE;
+    }
+    catch (err) {
+        console.log("Error in deletion of label from labelslist",err);
+        return ERR;
+    }
+}
+
+const editLabelssarrdb = async (email,oldlabel,editedlabel)=>{
+    try {
+        const editLabelresponse = await Notes.updateOne({"email":email,"labelslist":oldlabel},{$set:{"labelslist.$":editedlabel}});
+            
+        console.log("Label edited in db",editLabelresponse)
+    }
+    catch (error) {
+        console.log("Error in editing label in db",error);
+        return ERR;
+    }
+}
+
+
+module.exports = {addMainnotesobjtodb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,
+                   addSubnotesobjinarrdb,getnotesarrfromdb,getlabelsarrfromdb,
+                   addlabelnametodb,deleteLabelnameInarrindb,deleteLabelnameInarrindb,
+                   editLabelssarrdb}
