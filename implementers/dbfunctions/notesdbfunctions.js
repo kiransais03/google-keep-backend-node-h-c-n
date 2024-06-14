@@ -30,6 +30,17 @@ const addSubnotesobjinarrdb = async (email,subnotesobj)=>{
     }
 }
 
+const editandreplaceSubnotesobjinarrdb = async (email,subnotesobj)=>{
+    try {
+        const editreplaceSubnotesresponse = await Notes.updateOne({"email": email,"usernotes.id":subnotesobj.id},{$set:{"usernotes.$":subnotesobj}});
+        console.log("Notes replaced to db",editreplaceSubnotesresponse)
+    }
+    catch (error) {
+        console.log("Error in replacing sub notes to db",error);
+        return ERR;
+    }
+}
+
 const deleteUsernotesobjInarrindb = async (email,deltingobjid)=>{
     try {
         const response =await Notes.updateOne({"email" : email},{$pull :{"usernotes":{"id":deltingobjid}}});
@@ -126,4 +137,4 @@ const editLabelssarrdb = async (email,oldlabel,editedlabel)=>{
 module.exports = {addMainnotesobjtodb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,
                    addSubnotesobjinarrdb,getnotesarrfromdb,getlabelsarrfromdb,
                    addlabelnametodb,deleteLabelnameInarrindb,deleteLabelnameInarrindb,
-                   editLabelssarrdb}
+                   editLabelssarrdb,editandreplaceSubnotesobjinarrdb}

@@ -1,7 +1,7 @@
 const {isAuth} = require('../middlewares/Authmiddleware');
 const Joi = require('joi');
 const Note = require('../models/NotesSchema');
-const {addMainnotesobjtodb,addSubnotesobjinarrdb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,getnotesarrfromdb,getlabelsarrfromdb,addlabelnametodb,deleteLabelnameInarrindb,editLabelssarrdb} = require('./dbfunctions/notesdbfunctions');
+const {addMainnotesobjtodb,editandreplaceSubnotesobjinarrdb,addSubnotesobjinarrdb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,getnotesarrfromdb,getlabelsarrfromdb,addlabelnametodb,deleteLabelnameInarrindb,editLabelssarrdb} = require('./dbfunctions/notesdbfunctions');
 const {TRUE,FALSE,ERR} = require('../constants');
 
 //POST Add Notes
@@ -65,8 +65,51 @@ const deleteNotes = async (req,res)=>{
    }
 }
 
+//Edit the complete note obj or Replace the complete ntoe obj
+//POST Replace Notes
+const editandreplaceNotes = async (req,res)=>{
 
-//PATCH Edit notesobj
+  const isValid = Joi.object({
+      id : Joi.number().required(),
+      title : Joi.string().required(),
+      text : Joi.string().required(),
+      pinselected : Joi.boolean().required(),
+      archived : Joi.boolean().required(),
+      trashed : Joi.boolean().required(),
+      notebgcolour : Joi.string(),
+      labels :Joi.array().required()
+  }).validate(req.body.noteobj)
+
+  if(isValid.error) {
+    return res.status(400).send({
+      status : 400,
+      message : "Invalid notes data format",
+      data : isValid.error
+    })
+  }
+
+  const {email,noteobj} = req.body;
+  // console.log("Email",email,"Noteobj",noteobj)
+const isNotesreplaced = await editandreplaceSubnotesobjinarrdb(email,noteobj);
+console.log(isNotesreplaced);
+
+if(isNotesreplaced == ERR) {
+  return res.status(400).send({
+      status : 400,
+      message : "Error occurred while replacing notes to db.Pls retry"
+  })
+}
+else {
+  return res.status(201).send({
+      status : 201,
+      message : "Notes successfully replaced to db"
+  })
+}
+
+}
+
+
+//PATCH Edit notesobj by using editing key and editing value
 const editNotes = async (req,res)=>{
 
     const {email,id,editingkey,editingvalue} = req.body;
@@ -195,4 +238,4 @@ else {
 } 
 
 
-module.exports = {addNewnotes,deleteNotes,editNotes,getNotes,getLabelslist,addLabelname,deleteLabel,editLabelname}
+module.exports = {addNewnotes,deleteNotes,editNotes,editandreplaceNotes,getNotes,getLabelslist,addLabelname,deleteLabel,editLabelname}
