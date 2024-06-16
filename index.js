@@ -18,22 +18,6 @@ mongoose.connect(process.env.MONGODB_URI)
 
 
 app.get('/',async (req,res)=>{
-    // await deleteNotesindb();
-    // await addMainnotesobjtodb("kir779@gmail.com")
-    // await addSubnotesobjinarr("kir9@gmail.com",{
-    //     "id": 0,
-    //     "title": "Notes 1",
-    //     "text": "This is sample notes 1",
-    //     "pinselected": true,
-    //     "archived": false,
-    //     "trashed": false,
-    //     "notebgcolour": "#000000",
-    //     "labels": [
-    //       "work",
-    //       "home"
-    //     ]
-    //   })
-    //  await editUsernotesarrobj("kir9@gmail.com",0,"text","This is edited sample notes")
     res.send("This is the backend of google keep using node and html,css,js in frontend")
 })
 

@@ -26,9 +26,9 @@ const addNewnotes = async (req,res)=>{
       })
     }
 
-    const {email,noteobj} = req.body;
+    const {noteobj} = req.body;
     // console.log("Email",email,"Noteobj",noteobj)
-  const isNotesadded = await addSubnotesobjinarrdb(email,noteobj);
+  const isNotesadded = await addSubnotesobjinarrdb(req.locals.email,noteobj);
 
   if(isNotesadded == ERR) {
     return res.status(400).send({
@@ -48,8 +48,8 @@ const addNewnotes = async (req,res)=>{
 
 //DELETE Deletenotes from array
 const deleteNotes = async (req,res)=>{
-   const {email,deletingobjid} = req.body
-   const isNotesdeleted = await deleteUsernotesobjInarrindb(email,deletingobjid);
+   const {deletingobjid} = req.body
+   const isNotesdeleted = await deleteUsernotesobjInarrindb(req.locals.email,deletingobjid);
 
    if(isNotesdeleted == ERR) {
     return res.status(400).send({
@@ -88,9 +88,9 @@ const editandreplaceNotes = async (req,res)=>{
     })
   }
 
-  const {email,noteobj} = req.body;
+  const {noteobj} = req.body;
   // console.log("Email",email,"Noteobj",noteobj)
-const isNotesreplaced = await editandreplaceSubnotesobjinarrdb(email,noteobj);
+const isNotesreplaced = await editandreplaceSubnotesobjinarrdb(req.locals.email,noteobj);
 console.log(isNotesreplaced);
 
 if(isNotesreplaced == ERR) {
@@ -112,9 +112,9 @@ else {
 //PATCH Edit notesobj by using editing key and editing value
 const editNotes = async (req,res)=>{
 
-    const {email,id,editingkey,editingvalue} = req.body;
+    const {id,editingkey,editingvalue} = req.body;
 
-    const isNotesedited = await editUsernotesarrobjdb(email,id,editingkey,editingvalue);
+    const isNotesedited = await editUsernotesarrobjdb(req.locals.email,id,editingkey,editingvalue);
 
    if(isNotesedited == ERR) {
     return res.status(400).send({
@@ -134,7 +134,7 @@ const editNotes = async (req,res)=>{
 
 const getNotes = async (req,res)=>{
   // const {email} = req.body
-  const isNotesgetdata= await getnotesarrfromdb("kiransais03@gmail.com");
+  const isNotesgetdata= await getnotesarrfromdb(req.locals.email);
 
   if(isNotesgetdata == ERR) {
    return res.status(400).send({
@@ -155,7 +155,7 @@ const getNotes = async (req,res)=>{
 //GET Labels List Array
 const getLabelslist =async (req,res)=>{
   // const {email} = req.body
-  const isNotesgetdata= await getlabelsarrfromdb("kiransais03@gmail.com");
+  const isNotesgetdata= await getlabelsarrfromdb(req.locals.email);
 
   if(isNotesgetdata == ERR) {
    return res.status(400).send({
@@ -176,8 +176,8 @@ const getLabelslist =async (req,res)=>{
 //POST Add Label name to labellistarr
 const addLabelname = async (req,res)=>{
 
-  const {email,labelname} = req.body;
-const isLabeladded = await addlabelnametodb(email,labelname);
+  const {labelname} = req.body;
+const isLabeladded = await addlabelnametodb(req.locals.email,labelname);
 
 if(isLabeladded == ERR) {
   return res.status(400).send({
@@ -198,8 +198,8 @@ else {
 
 //DELETE Delete labelname from array
 const deleteLabel = async (req,res)=>{
-  const {email,labelname} = req.body
-  const isLabeldeleted = await deleteLabelnameInarrindb(email,labelname);
+  const {labelname} = req.body
+  const isLabeldeleted = await deleteLabelnameInarrindb(req.locals.email,labelname);
 
   if(isLabeldeleted == ERR) {
    return res.status(400).send({
@@ -219,9 +219,9 @@ const deleteLabel = async (req,res)=>{
 //PATCH Edit Label name
 const editLabelname = async (req,res)=>{
 
-  const {email,oldlabel,editedlabel} = req.body;
+  const {oldlabel,editedlabel} = req.body;
 
-  const isLabeledited = await editLabelssarrdb(email,oldlabel,editedlabel);
+  const isLabeledited = await editLabelssarrdb(req.locals.email,oldlabel,editedlabel);
 
  if(isLabeledited == ERR) {
   return res.status(400).send({

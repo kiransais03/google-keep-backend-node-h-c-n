@@ -133,7 +133,7 @@ const editLabelssarrdb = async (email,oldlabel,editedlabel)=>{
     }
 }
 
-
+ 
 module.exports = {addMainnotesobjtodb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,
                    addSubnotesobjinarrdb,getnotesarrfromdb,getlabelsarrfromdb,
                    addlabelnametodb,deleteLabelnameInarrindb,deleteLabelnameInarrindb,
