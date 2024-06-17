@@ -125,7 +125,7 @@ const deleteLabelnameInarrindb = async (email,labelname)=>{
 
 const editLabelssarrdb = async (email,oldlabel,editedlabel)=>{
     try {
-        const editLabelresponse = await Notes.updateOne({"email" : email},{$pull :{"labelslist":labelname}});
+        const editLabelresponse = await Notes.updateOne({"email":email,"labelslist":oldlabel},{$set:{"labelslist.$":editedlabel}});
             
         console.log("Label edited in db",editLabelresponse)
     }
