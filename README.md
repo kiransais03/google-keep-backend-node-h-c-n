@@ -2,10 +2,7 @@
 
 ##### Technologies Used : MongoDb,Express,HTML,CSS,JS,Node.js
 
-#### Dev Tools : VS Code,Github,Vercel,Render
-
-#### Note : In this github repo of frontend In folders pages,components two duplicate folders will appear,it is caused to 'git'.Git is not tracking the folder names changing from capital 
-####            letters to small letters.I will try to rectify it.
+#### Dev Tools : VS Code,Github,Vercel,Render.com
 
 #### Note : While Signup or LoginIn for first time website will take 1 to 1.5 minute to load and communicate with backend.Because the backend server is hosted on Render.com free platform.
 
@@ -23,6 +20,8 @@
    To start and run the server.  
    Open http://localhost:8080 to view it in your browser.
 
+#### Frontend Repo Link : https://github.com/kiransais03/Google-Keep-Js-Frontend   
+
 ### Design Decisions & Challenges Description :
 
 --This website consists of multiple API calls to create note,edit,delete,modify notes and as well as labels.Along with them user account creation and authentication is also implemented
@@ -32,7 +31,7 @@
 
 --In Frontend all the html,js,css files are made reusable which will be easy to maintain,modify and scaling the website.
 
-### Deployed Links : Using Vercel Hosting
+### Deployed Links :
 
 #### --Backend : https://google-keep-backend-node-h-c-n.onrender.com/
 
