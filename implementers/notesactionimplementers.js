@@ -1,7 +1,7 @@
 const {isAuth} = require('../middlewares/Authmiddleware');
 const Joi = require('joi');
 const Note = require('../models/NotesSchema');
-const {addMainnotesobjtodb,editandreplaceSubnotesobjinarrdb,addSubnotesobjinarrdb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,getnotesarrfromdb,getlabelsarrfromdb,addlabelnametodb,deleteLabelnameInarrindb,editLabelssarrdb} = require('./dbfunctions/notesdbfunctions');
+const {addMainnotesobjtodb,editandreplaceSubnotesobjinarrdb,addSubnotesobjinarrdb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,getnotesarrfromdb,getlabelsarrfromdb,addlabelnametodb,deleteLabelnameInarrindb,editLabelssarrdb,deletetrashednotesafter30daysindb} = require('./dbfunctions/notesdbfunctions');
 const {TRUE,FALSE,ERR} = require('../constants');
 
 //POST Add Notes
@@ -238,4 +238,24 @@ else {
 } 
 
 
-module.exports = {addNewnotes,deleteNotes,editNotes,editandreplaceNotes,getNotes,getLabelslist,addLabelname,deleteLabel,editLabelname}
+//DELETE Delete trashed notes after 30 days
+const deletetrashednotesafterexpiry = async (req,res)=>{
+  const isexpirynotesdeleted = await deletetrashednotesafter30daysindb(req.locals.email);
+
+  if(isexpirynotesdeleted == ERR) {
+   return res.status(400).send({
+       status : 400,
+       message : "Error occurred while deleting expired notes after 30 days in db.Pls reload"
+   }) 
+  }
+ else {
+   return res.status(200).send({
+       status : 200,
+       message : "Expired notes successfully deleted from db"
+     })
+  }
+}
+
+
+
+module.exports = {addNewnotes,deleteNotes,editNotes,editandreplaceNotes,getNotes,getLabelslist,addLabelname,deleteLabel,editLabelname,deletetrashednotesafterexpiry}

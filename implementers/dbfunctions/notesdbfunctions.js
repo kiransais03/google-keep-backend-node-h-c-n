@@ -86,6 +86,8 @@ const getnotesarrfromdb = async (email)=>{
     }
 }
 
+//labels functions
+
 const getlabelsarrfromdb = async (email)=>{
     try {
         const getlabelsarrresponse = await Notes.find({"email": email},{"labelslist":1});
@@ -123,7 +125,7 @@ const deleteLabelnameInarrindb = async (email,labelname)=>{
 
 const editLabelssarrdb = async (email,oldlabel,editedlabel)=>{
     try {
-        const editLabelresponse = await Notes.updateOne({"email":email,"labelslist":oldlabel},{$set:{"labelslist.$":editedlabel}});
+        const editLabelresponse = await Notes.updateOne({"email" : email},{$pull :{"labelslist":labelname}});
             
         console.log("Label edited in db",editLabelresponse)
     }
@@ -133,8 +135,35 @@ const editLabelssarrdb = async (email,oldlabel,editedlabel)=>{
     }
 }
 
+//notes delete from trash after 30 days function
+
+const deletetrashednotesafter30daysindb = async (email)=>{
+    try {
+        let currTime = new Date().getTime();
+        let millisecs30days = 1000*60*60*24*30;
+        
+        let notesdocumentdata = await getnotesarrfromdb(email);
+        let filteredusernotesarrafterexpiry = notesdocumentdata[0].usernotes.filter((currObj,index)=>{
+            if(currObj.trashed==false || (currObj.trashed==true && ((currTime-currObj.id)<=millisecs30days)))
+                {
+                    return currObj;
+                } 
+        })
+        console.log("Trashed 30 days",filteredusernotesarrafterexpiry)
+
+        const usernotesupdate = await Notes.updateOne( { "email":email }, { $set: { "usernotes": filteredusernotesarrafterexpiry } });
+        // console.log("data",notesdocumentdata[0].usernotes)
+        console.log("Trashed notes delted after 30 days in db",usernotesupdate)
+    }
+    catch (error) {
+        console.log("Error in delete trashed notes after 30 days lin  db",error);
+        return ERR;
+    }
+}
+
  
 module.exports = {addMainnotesobjtodb,deleteUsernotesobjInarrindb,editUsernotesarrobjdb,
                    addSubnotesobjinarrdb,getnotesarrfromdb,getlabelsarrfromdb,
                    addlabelnametodb,deleteLabelnameInarrindb,deleteLabelnameInarrindb,
-                   editLabelssarrdb,editandreplaceSubnotesobjinarrdb}
+                   editLabelssarrdb,editandreplaceSubnotesobjinarrdb,
+                   deletetrashednotesafter30daysindb}

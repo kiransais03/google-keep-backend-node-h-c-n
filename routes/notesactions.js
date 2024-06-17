@@ -1,5 +1,5 @@
 const express = require('express');
-const {addNewnotes,deleteNotes,editNotes,editandreplaceNotes,getNotes,getLabelslist,addLabelname,deleteLabel,editLabelname} = require('../implementers/notesactionimplementers');
+const {addNewnotes,deleteNotes,editNotes,editandreplaceNotes,getNotes,getLabelslist,addLabelname,deleteLabel,editLabelname,deletetrashednotesafterexpiry} = require('../implementers/notesactionimplementers');
 const app = express();
 const {isAuth} = require('../middlewares/Authmiddleware')
 
@@ -13,6 +13,8 @@ app.patch('/editnotes',isAuth,editNotes);
 app.put('/editandreplacenotes',isAuth,editandreplaceNotes)
 
 app.get('/getnotes',isAuth,getNotes);
+
+app.delete('/deletenotesafterexpiry',isAuth,deletetrashednotesafterexpiry)
 
 
 //labels
