@@ -125,9 +125,27 @@ const deleteLabelnameInarrindb = async (email,labelname)=>{
 
 const editLabelssarrdb = async (email,oldlabel,editedlabel)=>{
     try {
+  
         const editLabelresponse = await Notes.updateOne({"email":email,"labelslist":oldlabel},{$set:{"labelslist.$":editedlabel}});
+
+        let notesdocumentdata = await getnotesarrfromdb(email);
+
+        let filteredusernotesarrlabelsupdated = notesdocumentdata[0].usernotes.filter((currObj,index)=>{
+            if(currObj.labels.includes(oldlabel))
+                {
+                    let notelabelarr = currObj.labels;
+                    let oldlabelindex = notelabelarr.indexOf(oldlabel);
+                    notelabelarr.splice(oldlabelindex,1,editedlabel);
+                    currObj.labels = notelabelarr
+                    return currObj;
+                }
+                else {
+                    return currObj;
+                } 
+        })
+        const usernotesupdate = await Notes.updateOne( { "email":email }, { $set: { "usernotes": filteredusernotesarrlabelsupdated } });
             
-        console.log("Label edited in db",editLabelresponse)
+        console.log("Label & Usernotes with that label edited in db",editLabelresponse,"Notesdocumentdata",notesdocumentdata,"Usernotesupdate",usernotesupdate)
     }
     catch (error) {
         console.log("Error in editing label in db",error);
