@@ -114,7 +114,25 @@ const addlabelnametodb = async (email,labelname)=>{
 const deleteLabelnameInarrindb = async (email,labelname)=>{
     try {
         const response =await Notes.updateOne({"email" : email},{$pull :{"labelslist":labelname}});
-        console.log("Label from the array deleted",response)
+        
+        let notesdocumentdata = await getnotesarrfromdb(email);
+
+        let filteredusernotesarrlabelsupdated = notesdocumentdata[0].usernotes.filter((currObj,index)=>{
+            if(currObj.labels.includes(labelname))
+                {
+                    let notelabelarr = currObj.labels;
+                    let labelindex = notelabelarr.indexOf(labelname);
+                    notelabelarr.splice(labelindex,1);
+                    currObj.labels = notelabelarr
+                    return currObj;
+                }
+                else {
+                    return currObj;
+                } 
+        })
+        const usernotesupdate = await Notes.updateOne( { "email":email }, { $set: { "usernotes": filteredusernotesarrlabelsupdated } });
+        
+        console.log("Label & Usernotes leble deleted in db",response,"Notesdocumentdata",notesdocumentdata,"Usernotesupdate",usernotesupdate)
         return TRUE;
     }
     catch (err) {
